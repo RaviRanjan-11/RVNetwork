@@ -17,6 +17,7 @@ protocol RVServiceNetworkRouter: AnyObject {
 public class RVServiceRouter: RVServiceNetworkRouter {
     
     public var isLoggingEnable: Bool = false
+    public static let sharedServiceRouter = RVServiceRouter()
     public init(){}
     private var task: URLSessionTask?
     
