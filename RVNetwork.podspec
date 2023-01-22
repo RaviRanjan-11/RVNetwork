@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'RVNetwork'
-  s.version          = '0.1.1'
+  s.version          = '0.1.2'
   s.summary          = 'A minimal network layer created With URL session and Protocol oriented approach'
 
 # This description is used to generate tags and improve search results.
