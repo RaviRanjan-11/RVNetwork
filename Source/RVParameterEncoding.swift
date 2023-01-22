@@ -7,7 +7,7 @@
 //
 import Foundation
 
-public typealias Parameters = [String:Any]
+public typealias Parameters = Encodable
 
 public protocol RVParameterEncoder {
     func encode(urlRequest: inout URLRequest, with parameters: Parameters) throws
@@ -43,11 +43,4 @@ public enum RVParameterEncoding {
             throw error
         }
     }
-}
-
-
-public enum NetworkError : String, Error {
-    case parametersNil = "Parameters were nil."
-    case encodingFailed = "Parameter encoding failed."
-    case missingURL = "URL is nil."
 }

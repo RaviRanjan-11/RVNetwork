@@ -8,19 +8,17 @@
 
 import Foundation
 
-public typealias HTTPHeaders = [String:String]
+public typealias RVHTTPHeaders = [String:String]
 
 public enum RVHTTPTask {
     case request
     
-    case requestWithParameters(bodyParameters: Parameters?,
-        bodyEncoding: RVParameterEncoding,
-        urlParameters: Parameters?)
+    case requestWithParameters(bodyEncoding: RVParameterEncoding, bodyParameters: Parameters? = nil, urlParameters: Parameters? = nil)
     
-    case requestParametersAndHeaders(bodyParameters: Parameters?,
-        bodyEncoding: RVParameterEncoding,
-        urlParameters: Parameters?,
-        additionHeaders: HTTPHeaders?)
+    case requestParametersAndHeaders(bodyEncoding: RVParameterEncoding,
+        urlParameters: Parameters? = nil,
+        bodyParameters: Parameters? = nil,
+        additionHeaders: RVHTTPHeaders? = nil)
     
     // case download, upload...etc
 }

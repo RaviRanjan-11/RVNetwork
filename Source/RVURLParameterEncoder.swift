@@ -11,16 +11,19 @@ import Foundation
 public struct RVURLParameterEncoder: RVParameterEncoder {
     public func encode(urlRequest: inout URLRequest, with parameters: Parameters) throws {
         
-        guard let url = urlRequest.url else { throw NetworkError.missingURL }
+        guard let url = urlRequest.url else { throw RVNetworkingError.inValidURLError }
         
         if var urlComponents = URLComponents(url: url,
-                                             resolvingAgainstBaseURL: false), !parameters.isEmpty {
+                                             resolvingAgainstBaseURL: false) {
             
             urlComponents.queryItems = [URLQueryItem]()
             
-            for (key,value) in parameters {
-                let queryItem = URLQueryItem(name: key,
-                                             value: "\(value)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))
+            
+            let mirror = Mirror(reflecting: parameters)
+            
+            for child in mirror.children {
+                let queryItem = URLQueryItem(name: child.label ?? "",
+                                             value: "\(child.value)".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))
                 urlComponents.queryItems?.append(queryItem)
             }
             urlRequest.url = urlComponents.url

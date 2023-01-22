@@ -15,6 +15,7 @@ public enum RVNetworkingError: Error {
     case urlResponseError
     case decodingError
     case dataError
+    case inValidURLError
 }
 
 
@@ -29,6 +30,8 @@ extension RVNetworkingError: RVErrorDescription {
             return "Error in url response"
         case .networkError:
             return "Error in network connection"
+        case .inValidURLError:
+            return "URL Is Invalid"
         }
     }
 }

@@ -24,9 +24,9 @@ DESC
   s.homepage         = 'https://github.com/veerChauhan/RVNetwork.git'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { '26132769' => 'r.ranjanchn@gmail.com' }
+  s.author           = { '' => 'r.ranjanchn@gmail.com' }
   s.source           = { :git => 'https://github.com/veerChauhan/RVNetwork.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+   s.social_media_url = 'https://twitter.com/b_banzara'
 
   s.ios.deployment_target = '10.0'
 

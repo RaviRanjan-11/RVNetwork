@@ -8,11 +8,11 @@
 
 import Foundation
 
-public protocol RVEndPoint {
-    var baseURL: URL { get }
+public protocol RVNetworkRoute {
+    init(task: RVHTTPTask)
+    var baseURL: String { get }
     var path: String? { get }
     var httpMethod: RVHTTPMethod { get }
     var task: RVHTTPTask { get }
-    var headers: HTTPHeaders? { get }
+    var headers: RVHTTPHeaders? { get }
 }
-

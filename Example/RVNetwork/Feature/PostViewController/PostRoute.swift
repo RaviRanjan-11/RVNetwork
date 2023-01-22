@@ -8,9 +8,13 @@
 
 import Foundation
 import RVNetwork
-struct PostRoute: RVEndPoint {
-    var baseURL: URL {
-        return URL(string: "https://jsonplaceholder.typicode.com/")!
+struct PostRoute: RVNetworkRoute {
+    
+    init(task: RVHTTPTask = .request) {
+        self.task = task
+    }
+    var baseURL: String {
+        return  "https://jsonplaceholder.typicode.com/"
     }
     
     var path: String? {
@@ -21,14 +25,10 @@ struct PostRoute: RVEndPoint {
         return .get
     }
     
-    var task: RVNetwork.RVHTTPTask {
-        return .request
-    }
-    
-    var headers: RVNetwork.HTTPHeaders? {
+    var headers: RVNetwork.RVHTTPHeaders? {
         return nil
     }
-    
+    var task: RVNetwork.RVHTTPTask
     
 }
 

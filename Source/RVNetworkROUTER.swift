@@ -10,8 +10,7 @@ import Foundation
 
 
 protocol RVServiceNetworkRouter: AnyObject {
-//    associatedtype EndPoint: EndPointType
-    func performDataTask<T: Decodable>(_ route: RVEndPoint, completionHandler: @escaping(Result<T, RVNetworkingError>) -> Void)
+    func performDataTask<T: Decodable>(_ route: RVNetworkRoute, completionHandler: @escaping(Result<T, RVNetworkingError>) -> Void)
     func cancel()
 }
 
@@ -21,7 +20,7 @@ public class RVServiceRouter: RVServiceNetworkRouter {
     public init(){}
     private var task: URLSessionTask?
     
-    public func performDataTask<T: Decodable>(_ route: RVEndPoint, completionHandler: @escaping(Result<T, RVNetworkingError>) -> Void) {
+    public func performDataTask<T: Decodable>(_ route: RVNetworkRoute, completionHandler: @escaping(Result<T, RVNetworkingError>) -> Void) {
         
         do {
             let urlRequest = try self.buildRequest(from: route)
@@ -76,9 +75,13 @@ public class RVServiceRouter: RVServiceNetworkRouter {
     }
     
     
-    private func buildRequest(from route: RVEndPoint) throws -> URLRequest {
+    private func buildRequest(from route: RVNetworkRoute) throws -> URLRequest {
         
-        var request = URLRequest(url: route.baseURL.appendingPathComponent(route.path ?? ""),
+        guard let baseURL = URL(string: route.baseURL) else{
+            throw RVNetworkingError.inValidURLError
+        }
+        
+        var request = URLRequest(url: baseURL.appendingPathComponent(route.path ?? ""),
                                  cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
                                  timeoutInterval: 10.0)
         
@@ -87,33 +90,25 @@ public class RVServiceRouter: RVServiceNetworkRouter {
             switch route.task {
             case .request:
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            case .requestWithParameters(let bodyParameters,
-                                        let bodyEncoding,
+            case .requestWithParameters(let bodyEncoding, let bodyParameter,
                                         let urlParameters):
                 
-                try self.configureParameters(bodyParameters: bodyParameters,
-                                             bodyEncoding: bodyEncoding,
-                                             urlParameters: urlParameters,
-                                             request: &request)
+                try self.configureParameters(bodyEncoding: bodyEncoding, bodyParameters: bodyParameter, urlParameters: urlParameters, request: &request)
                 
-            case .requestParametersAndHeaders(let bodyParameters,
-                                              let bodyEncoding,
-                                              let urlParameters,
-                                              let additionalHeaders):
+            case .requestParametersAndHeaders(let bodyEncoding, let bodyParameter,
+                                              let urlParameters, let additionalHeaders):
                 
                 self.addAdditionalHeaders(additionalHeaders, request: &request)
-                try self.configureParameters(bodyParameters: bodyParameters,
-                                             bodyEncoding: bodyEncoding,
-                                             urlParameters: urlParameters,
-                                             request: &request)
+                
+                try self.configureParameters(bodyEncoding: bodyEncoding, bodyParameters: bodyParameter, urlParameters: urlParameters, request: &request)
             }
             return request
         } catch {
             throw error
         }
     }
-    fileprivate func configureParameters(bodyParameters: Parameters?,
-                                         bodyEncoding: RVParameterEncoding,
+    private func configureParameters(bodyEncoding: RVParameterEncoding,
+                                         bodyParameters: Parameters?,
                                          urlParameters: Parameters?,
                                          request: inout URLRequest) throws {
         do {
@@ -123,7 +118,7 @@ public class RVServiceRouter: RVServiceNetworkRouter {
             throw error
         }
     }
-    fileprivate func addAdditionalHeaders(_ additionalHeaders: HTTPHeaders?, request: inout URLRequest) {
+    private func addAdditionalHeaders(_ additionalHeaders: RVHTTPHeaders?, request: inout URLRequest) {
         guard let headers = additionalHeaders else { return }
         for (key, value) in headers {
             request.setValue(value, forHTTPHeaderField: key)
@@ -131,3 +126,5 @@ public class RVServiceRouter: RVServiceNetworkRouter {
     }
     
 }
+
+

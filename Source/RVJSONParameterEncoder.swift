@@ -11,13 +11,13 @@ import Foundation
 public struct RVJSONParameterEncoder: RVParameterEncoder {
     public func encode(urlRequest: inout URLRequest, with parameters: Parameters) throws {
         do {
-            let jsonAsData = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+            let jsonAsData = try JSONEncoder().encode(parameters)
             urlRequest.httpBody = jsonAsData
             if urlRequest.value(forHTTPHeaderField: "Content-Type") == nil {
                 urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
             }
         }catch {
-            throw NetworkError.encodingFailed
+            throw RVNetworkingError.decodingError
         }
     }
 }
