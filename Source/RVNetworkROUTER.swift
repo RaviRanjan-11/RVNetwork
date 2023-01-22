@@ -17,58 +17,61 @@ protocol RVServiceNetworkRouter: AnyObject {
 public class RVServiceRouter: RVServiceNetworkRouter {
     
     public var isLoggingEnable: Bool = false
+    private var queue = DispatchQueue(label: "RVNetworkQueue",qos: .background,attributes: .concurrent)
     public static let sharedServiceRouter = RVServiceRouter()
     public init(){}
     private var task: URLSessionTask?
     
     public func performDataTask<T: Decodable>(_ route: RVNetworkRoute, completionHandler: @escaping(Result<T, RVNetworkingError>) -> Void) {
-        
-        do {
-            let urlRequest = try self.buildRequest(from: route)
+        queue.async {
             
-            if self.isLoggingEnable {
-                RVNetworkLogger.log(request: urlRequest)
-            }
-            
-            task =  URLSession.shared.dataTask(with: urlRequest) { responseData, urlResponse, error in
-                guard error == nil else {
-                    completionHandler(.failure(.networkError))
-                    return
-                }
-                
-                guard let urlResponse = urlResponse as? HTTPURLResponse, urlResponse.statusCode == 200 else {
-                    completionHandler(.failure(.urlResponseError))
-                    return
-                }
+            do {
+                let urlRequest = try self.buildRequest(from: route)
                 
                 if self.isLoggingEnable {
-                    RVNetworkLogger.log(response: urlResponse)
+                    RVNetworkLogger.log(request: urlRequest)
                 }
                 
-                guard let responseData = responseData , responseData.count > 0 else {
-                    completionHandler(.failure(.dataError))
-                    return
-                }
-                
-                if self.isLoggingEnable {
-                    RVNetworkLogger.log(response: responseData)
-                }
-                
-                let decoder = JSONDecoder()
-                do {
-                    let result = try decoder.decode(T.self, from: responseData)
-                    completionHandler(.success(result))
+                self.task =  URLSession.shared.dataTask(with: urlRequest) { responseData, urlResponse, error in
+                    guard error == nil else {
+                        completionHandler(.failure(.networkError))
+                        return
+                    }
                     
-                } catch {
-                    debugPrint("error occured while decoding = \(error.localizedDescription)")
-                    completionHandler(.failure(.decodingError))
+                    guard let urlResponse = urlResponse as? HTTPURLResponse, urlResponse.statusCode == 200 else {
+                        completionHandler(.failure(.urlResponseError))
+                        return
+                    }
+                    
+                    if self.isLoggingEnable {
+                        RVNetworkLogger.log(response: urlResponse)
+                    }
+                    
+                    guard let responseData = responseData , responseData.count > 0 else {
+                        completionHandler(.failure(.dataError))
+                        return
+                    }
+                    
+                    if self.isLoggingEnable {
+                        RVNetworkLogger.log(response: responseData)
+                    }
+                    
+                    let decoder = JSONDecoder()
+                    do {
+                        let result = try decoder.decode(T.self, from: responseData)
+                        completionHandler(.success(result))
+                        
+                    } catch {
+                        debugPrint("error occured while decoding = \(error.localizedDescription)")
+                        completionHandler(.failure(.decodingError))
+                    }
+                    
                 }
-                
+            }catch {
+                completionHandler(.failure(.networkError))
             }
-        }catch {
-            completionHandler(.failure(.networkError))
+            self.task?.resume()
         }
-        self.task?.resume()
     }
     
     public func cancel() {
@@ -91,12 +94,12 @@ public class RVServiceRouter: RVServiceNetworkRouter {
             switch route.task {
             case .request:
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            case .requestWithParameters(let bodyEncoding, let bodyParameter,
+            case .withParameters(let bodyEncoding, let bodyParameter,
                                         let urlParameters):
                 
                 try self.configureParameters(bodyEncoding: bodyEncoding, bodyParameters: bodyParameter, urlParameters: urlParameters, request: &request)
                 
-            case .requestParametersAndHeaders(let bodyEncoding, let bodyParameter,
+            case .withParametersAndHeaders(let bodyEncoding, let bodyParameter,
                                               let urlParameters, let additionalHeaders):
                 
                 self.addAdditionalHeaders(additionalHeaders, request: &request)

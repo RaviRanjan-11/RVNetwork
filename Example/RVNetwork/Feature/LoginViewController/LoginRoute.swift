@@ -27,6 +27,4 @@ struct LoginRoute: RVNetworkRoute {
     var task: RVNetwork.RVHTTPTask
     
     var headers: RVNetwork.RVHTTPHeaders? = nil
-    
-    
 }

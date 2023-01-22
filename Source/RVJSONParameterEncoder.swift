@@ -17,7 +17,7 @@ public struct RVJSONParameterEncoder: RVParameterEncoder {
                 urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
             }
         }catch {
-            throw RVNetworkingError.decodingError
+            throw RVNetworkingError.encodingError
         }
     }
 }

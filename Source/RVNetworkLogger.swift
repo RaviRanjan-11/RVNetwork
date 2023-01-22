@@ -13,7 +13,6 @@ class RVNetworkLogger {
     static func log(request: URLRequest) {
         
         print("\n - - - - - - - - - - OUTGOING - - - - - - - - - - \n")
-        defer { print("\n - - - - - - - - - -  END - - - - - - - - - - \n") }
         
         let urlAsString = request.url?.absoluteString ?? ""
         let urlComponents = NSURLComponents(string: urlAsString)
@@ -41,7 +40,6 @@ class RVNetworkLogger {
     
     static func log(response: HTTPURLResponse) {
         print("\n - - - - - - - - - - Incoming - - - - - - - - - - \n")
-        defer { print("\n - - - - - - - - - -  END - - - - - - - - - - \n") }
         print("Status code: \(response.statusCode) \n")
 //        print("Description : \(response.description) \n \n")
         
@@ -49,6 +47,7 @@ class RVNetworkLogger {
     static func log(response: Data){
         print("\n - - - - - - JSON Response Logging - - - - - - - \n")
         defer { print("\n - - - - - - - - - -  END - - - - - - - - - - \n") }
+
         do {
             print(try JSONSerialization.jsonObject(with: response))
         }

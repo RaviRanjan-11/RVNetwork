@@ -13,9 +13,9 @@ public typealias RVHTTPHeaders = [String:String]
 public enum RVHTTPTask {
     case request
     
-    case requestWithParameters(bodyEncoding: RVParameterEncoding, bodyParameters: Parameters? = nil, urlParameters: Parameters? = nil)
+    case withParameters(encoding: RVParameterEncoding, bodyParameters: Parameters? = nil, urlParameters: Parameters? = nil)
     
-    case requestParametersAndHeaders(bodyEncoding: RVParameterEncoding,
+    case withParametersAndHeaders(encoding: RVParameterEncoding,
         urlParameters: Parameters? = nil,
         bodyParameters: Parameters? = nil,
         additionHeaders: RVHTTPHeaders? = nil)
