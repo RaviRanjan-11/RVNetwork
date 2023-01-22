@@ -1,0 +1,16 @@
+PODS:
+  - RVNetwork (0.1.0)
+
+DEPENDENCIES:
+  - RVNetwork (from `../`)
+
+EXTERNAL SOURCES:
+  RVNetwork:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  RVNetwork: b5f6bb08d63aac2a1b4c3bd6ae80f9c0c2819eb1
+
+PODFILE CHECKSUM: a0df1563ceb7b7308d4ed3c3298c7b98483fef33
+
+COCOAPODS: 1.11.2

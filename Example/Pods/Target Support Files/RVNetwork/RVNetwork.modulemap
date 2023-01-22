@@ -1,0 +1,6 @@
+framework module RVNetwork {
+  umbrella header "RVNetwork-umbrella.h"
+
+  export *
+  module * { export * }
+}

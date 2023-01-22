@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'RVNetwork'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of RVNetwork.'
+  s.summary          = 'A minimal network layer created With URL session and Protocol oriented approach'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,19 +18,19 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+'A minimal network layer created With URL session and Protocol oriented approach'
+DESC
 
-  s.homepage         = 'https://github.com/26132769/RVNetwork'
+  s.homepage         = 'https://github.com/veerChauhan/RVNetwork.git'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { '26132769' => 'r.ranjanchn@gmail.com' }
-  s.source           = { :git => 'https://github.com/26132769/RVNetwork.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/veerChauhan/RVNetwork.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'
 
-  s.source_files = 'RVNetwork/Classes/**/*'
+  s.source_files = 'Source/**/*'
   
   # s.resource_bundles = {
   #   'RVNetwork' => ['RVNetwork/Assets/*.png']

@@ -17,11 +17,11 @@ struct PostRoute: RVEndPoint {
         return nil
     }
     
-    var httpMethod: RVNetwork.HTTPMethod {
+    var httpMethod: RVNetwork.RVHTTPMethod {
         return .get
     }
     
-    var task: RVNetwork.HTTPTask {
+    var task: RVNetwork.RVHTTPTask {
         return .request
     }
     
