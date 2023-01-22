@@ -10,11 +10,11 @@ import Foundation
 import RVNetwork
 struct PostRoute: RVEndPoint {
     var baseURL: URL {
-        return URL(string: "https://jsonplaceholder.typicode.com/posts")!
+        return URL(string: "https://jsonplaceholder.typicode.com/")!
     }
     
     var path: String? {
-        return nil
+        return "posts"
     }
     
     var httpMethod: RVNetwork.RVHTTPMethod {

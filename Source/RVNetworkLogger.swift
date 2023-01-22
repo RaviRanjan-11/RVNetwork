@@ -23,11 +23,12 @@ class RVNetworkLogger {
         let query = "\(urlComponents?.query ?? "")"
         let host = "\(urlComponents?.host ?? "")"
         
-        var logOutput = """
-                        \(urlAsString) \n\n
-                        \(method) \(path)?\(query) HTTP/1.1 \n
-                        HOST: \(host)\n
-                        """
+        print("URL : \(urlAsString)")
+        print("Path : \(path)")
+        print("Query : \(query)")
+        print("Method : \(method)")
+        print("HOST: \(host)")
+        var logOutput = ""
         for (key,value) in request.allHTTPHeaderFields ?? [:] {
             logOutput += "\(key): \(value) \n"
         }
@@ -38,5 +39,11 @@ class RVNetworkLogger {
         print(logOutput)
     }
     
-    static func log(response: URLResponse) {}
+    static func log(response: HTTPURLResponse) {
+        print("\n - - - - - - - - - - Incoming - - - - - - - - - - \n")
+        defer { print("\n - - - - - - - - - -  END - - - - - - - - - - \n") }
+        print("Status code: \(response.statusCode) \n")
+//        print("Description : \(response.description) \n \n")
+        
+    }
 }

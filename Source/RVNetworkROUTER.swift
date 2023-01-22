@@ -28,7 +28,6 @@ public class RVServiceRouter: RVServiceNetworkRouter {
             
             
             task =  URLSession.shared.dataTask(with: urlRequest) { responseData, urlResponse, error in
-                
                 guard error == nil else {
                     completionHandler(.failure(.networkError))
                     return
@@ -38,6 +37,8 @@ public class RVServiceRouter: RVServiceNetworkRouter {
                     completionHandler(.failure(.urlResponseError))
                     return
                 }
+                RVNetworkLogger.log(response: urlResponse)
+
                 guard let responseData = responseData , responseData.count > 0 else {
                     completionHandler(.failure(.dataError))
                     return
