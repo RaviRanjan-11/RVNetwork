@@ -17,6 +17,7 @@ protocol RVServiceNetworkRouter: AnyObject {
 
 public class RVServiceRouter: RVServiceNetworkRouter {
     
+    public var isLoggingEnable: Bool = false
     public init(){}
     private var task: URLSessionTask?
     
@@ -24,8 +25,10 @@ public class RVServiceRouter: RVServiceNetworkRouter {
         
         do {
             let urlRequest = try self.buildRequest(from: route)
-            RVNetworkLogger.log(request: urlRequest)
             
+            if self.isLoggingEnable {
+                RVNetworkLogger.log(request: urlRequest)
+            }
             
             task =  URLSession.shared.dataTask(with: urlRequest) { responseData, urlResponse, error in
                 guard error == nil else {
@@ -37,12 +40,20 @@ public class RVServiceRouter: RVServiceNetworkRouter {
                     completionHandler(.failure(.urlResponseError))
                     return
                 }
-                RVNetworkLogger.log(response: urlResponse)
-
+                
+                if self.isLoggingEnable {
+                    RVNetworkLogger.log(response: urlResponse)
+                }
+                
                 guard let responseData = responseData , responseData.count > 0 else {
                     completionHandler(.failure(.dataError))
                     return
                 }
+                
+                if self.isLoggingEnable {
+                    RVNetworkLogger.log(response: responseData)
+                }
+                
                 let decoder = JSONDecoder()
                 do {
                     let result = try decoder.decode(T.self, from: responseData)

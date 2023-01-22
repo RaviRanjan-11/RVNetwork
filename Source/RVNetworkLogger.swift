@@ -46,4 +46,15 @@ class RVNetworkLogger {
 //        print("Description : \(response.description) \n \n")
         
     }
+    static func log(response: Data){
+        print("\n - - - - - - - - - - JSON Response Logging - - - - - - - - - - \n")
+        defer { print("\n - - - - - - - - - -  END - - - - - - - - - - \n") }
+        do {
+            print(try JSONSerialization.jsonObject(with: response))
+        }
+        catch {
+            print("Error In Json")
+        }
+     
+    }
 }

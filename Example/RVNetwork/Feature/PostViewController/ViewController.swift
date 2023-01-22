@@ -27,6 +27,7 @@ class ViewController: UIViewController {
         self.postTable.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "PostTableViewCell")
         let postRoute = PostRoute()
         let service = RVNetwork.RVServiceRouter()
+        service.isLoggingEnable = true
         
         service.performDataTask(postRoute) { [weak self] (result: Result<Post, RVNetworkingError>) in
             switch  result {
