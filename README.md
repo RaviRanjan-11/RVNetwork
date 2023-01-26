@@ -70,6 +70,50 @@ In your Viewmodel of viewcontroller or action button -->>
 
 ```
 
+
+### Post Request:
+
+```
+
+struct LoginRoute: RVNetworkRoute {
+    init(task: RVNetwork.RVHTTPTask) {
+        self.task = task
+    }
+    
+    var baseURL: String {
+        return "Your URL"
+    }
+    
+    var path: String? {
+        return "api/v1/signin"
+    }
+    
+    var httpMethod: RVNetwork.RVHTTPMethod {
+        return .post
+    }
+    
+    var task: RVNetwork.RVHTTPTask
+    
+    var headers: RVNetwork.RVHTTPHeaders? = nil
+}
+
+
+In your Viewmodel of viewcontroller or action button -->>
+
+
+    let task = RVHTTPTask.withParameters(encoding: .jsonEncoding, bodyParameters: loginCredential)
+    networkService.isLoggingEnable = true
+    networkService.performDataTask(LoginRoute(task: task)) { (response: Result<LoginResponse, RVNetworkingError>) in
+        switch response {
+        case .success(let success):
+            print(success)
+        case .failure(let failure):
+            print(failure)
+        }
+    }
+
+```
+
 ## Author
 
 Ravi Ranjan, r.ranjanchn@gmail.com
