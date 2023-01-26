@@ -1,6 +1,5 @@
 # RVNetwork
 
-[![CI Status](https://img.shields.io/travis/26132769/RVNetwork.svg?style=flat)](https://travis-ci.org/26132769/RVNetwork)
 [![Version](https://img.shields.io/cocoapods/v/RVNetwork.svg?style=flat)](https://cocoapods.org/pods/RVNetwork)
 [![License](https://img.shields.io/cocoapods/l/RVNetwork.svg?style=flat)](https://cocoapods.org/pods/RVNetwork)
 [![Platform](https://img.shields.io/cocoapods/p/RVNetwork.svg?style=flat)](https://cocoapods.org/pods/RVNetwork)
